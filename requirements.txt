@@ -2,4 +2,5 @@ flask
 gunicorn
 pandas
 matplotlib
-
+SQLAlchemy
+psycopg2

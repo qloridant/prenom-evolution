@@ -6,6 +6,8 @@ import os
 import base64
 import csv
 from datetime import datetime
+
+from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 # Configuring the database connection using DATABASE_URL from Heroku
