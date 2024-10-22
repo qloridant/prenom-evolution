@@ -7,16 +7,24 @@ import csv
 from datetime import datetime
 app = Flask(__name__)
 
+# Configuring the database connection using DATABASE_URL from Heroku
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///local.db')  # Fallback to SQLite for local testing
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Fonction pour enregistrer les prénoms recherchés
-def log_search(name, log_file='search_history.csv'):
-    with open(log_file, mode='a', newline='', encoding='utf-8') as file:
-        print(log_file)
-        writer = csv.writer(file)
-        # Enregistrer le prénom et la date/heure actuelle
-        writer.writerow([name, datetime.now().strftime("%Y-%m-%d %H:%M:%S")])
-        print("Name logged")
+# Initialize the database
+db = SQLAlchemy(app)
 
+# Define the model for storing search logs
+class SearchLog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+# Function for logging the search to the database
+def log_search(name):
+    new_search = SearchLog(name=name)
+    db.session.add(new_search)
+    db.session.commit()
 
 # Function to get the evolution of a given French first name and return the plot as a base64 image
 def plot_name_evolution(name: str, csv_file: str = 'french_first_names.csv'):
