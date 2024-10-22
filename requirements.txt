@@ -3,4 +3,5 @@ gunicorn
 pandas
 matplotlib
 SQLAlchemy
+flask_sqlalchemy
 psycopg2
