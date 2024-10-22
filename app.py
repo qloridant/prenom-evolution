@@ -11,9 +11,11 @@ app = Flask(__name__)
 # Fonction pour enregistrer les prénoms recherchés
 def log_search(name, log_file='search_history.csv'):
     with open(log_file, mode='a', newline='', encoding='utf-8') as file:
+        print(log_file)
         writer = csv.writer(file)
         # Enregistrer le prénom et la date/heure actuelle
         writer.writerow([name, datetime.now().strftime("%Y-%m-%d %H:%M:%S")])
+        print("Name logged")
 
 
 # Function to get the evolution of a given French first name and return the plot as a base64 image
